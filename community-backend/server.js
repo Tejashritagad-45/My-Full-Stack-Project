@@ -29,7 +29,7 @@ const corsOptions = {
 app.set("trust proxy", 1);
 
 app.use(cors(corsOptions));
-app.options(cors(corsOptions));
+// app.options(cors(corsOptions));
 
 
 app.use(cookieParser());
