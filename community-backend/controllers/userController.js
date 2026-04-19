@@ -42,10 +42,12 @@ const register = async (req, res) => {
 
 
 const login = async (req, res) => {
+    
 
     try {
         const { email, password } = req.body;
         const user = await UserServices.loginUser({ email, password })
+        const isProduction = process.env.NODE_ENV === "production";
         res.clearCookie("token", {
             httpOnly: true,
             sameSite:isProduction?"none":"lax",
@@ -118,7 +120,7 @@ const profile = async (req, res) => {
     try {
         // const {email}=req.user;
         if (!req.user) throw new Error("user not found from token ,please login/signup again")
-            const userId = req.user.id;
+            const userId = req.user._id;
              const user = await User.findById(req.user._id)
             // .populate("hostedCommunities")
             .populate("joinedCommunities")
@@ -141,7 +143,7 @@ const profile = async (req, res) => {
         res.json({
             error: {
                 message: "failed to find a user",
-                Info: err.message,
+                info: err.message,
             },
             data: null
         })
@@ -285,6 +287,7 @@ const toggleRSVP = async (req, res) => {
 
 const logout = (req, res) => {
     try {
+    const isProduction = process.env.NODE_ENV === "production";
         res.clearCookie("token", {
             httpOnly: true,
             sameSite: isProduction?"none":"lax",
@@ -316,7 +319,7 @@ const userProfilePic = async (req, res) => {
             throw new Error("only images are allowed as profile picture");
 
         const userProfilePath = req.file;
-        const userId = req.user_id;
+        const userId = req.user._id;
         await UserServices.uploadProfilePic({ userProfilePath, userId })
 
         res.json({
