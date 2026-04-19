@@ -121,6 +121,8 @@ const CreateCommunityPage = () => {
 
 
           <select name="category" onChange={handleInput} value={data.category} className={styles.category}>
+
+            <option >Select</option>
             <option >Chess</option>
             <option >Mern</option>
             <option >Cooking</option>
