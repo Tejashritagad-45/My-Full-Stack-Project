@@ -1,0 +1,53 @@
+import mongoose from "mongoose";
+const userSchema= new mongoose.Schema({
+    name:{
+        type:String,
+        required:true,
+        trim:true,
+        minLength:10,
+        maxLength:100
+    },
+    email:{
+        type:String,
+        required:true,
+        trim:true,
+        unique:true,
+        lowercase:true,
+        index:true
+
+    },
+    hashedPassword:{
+        type:String,
+        required:true,
+        select:false,
+        minLength:6,
+    },
+
+    profilePicUrl:{
+        type:String
+
+    },
+    role:{
+       type:String,
+       enum:["host","member"],
+       default:"member"
+
+    },
+    joinedCommunities:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Community"
+
+    },
+],
+ rsvpedEvents:[
+    {
+       type:mongoose.Schema.Types.ObjectId,
+        ref:"Event",
+ },
+]
+})
+
+// modules.exports=mongoose.model("User",userSchema);
+// module.exports=mongoose.model("User",userSchema);
+const User=mongoose.model("User",userSchema);
+export default User;
