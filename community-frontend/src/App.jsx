@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 import Register from './pages/Register'
 import Login from './pages/Login'
@@ -28,6 +28,11 @@ import ProtectedRoute from './pages/ProtectedRoute'
 const App = () => {
   // const dispatch = useDispatch()
   const dispatch = useDispatch();
+  const[loading,setLoading]=useState(true)
+  const { user, isLoggedIn } = useSelector((state) => state.auth)
+  const { joinedCommunities } = useSelector((state) => state.community)
+
+
 
   useEffect(() => {
     const SERVER_URL =`${import.meta.env.VITE_API_URL}/user`
@@ -41,8 +46,10 @@ const App = () => {
         const user = response?.data?.data?.user
         console.log("FULL USER:", response?.data?.data?.user);
 
+         if(user){
 
-        dispatch(login({ user }));
+           dispatch(login({ user }));
+         
 
         dispatch(setExistingDetails({
           joinedCommunities: user?.joinedCommunities || [],
@@ -57,10 +64,13 @@ const App = () => {
           rsvpedEvents: user?.rsvpedEvents || [],
           myCreatedEvents: user?.myCreatedEvents || []
         }))
+      }
       } catch (error) {
         console.log(error);
 
 
+      }finally{
+        setLoading(false);
       }
     };
 
@@ -69,10 +79,7 @@ const App = () => {
 
 
 
-  const { user, isLoggedIn } = useSelector((state) => state.auth)
-  const { joinedCommunities } = useSelector((state) => state.community)
-
-
+  
 
   function loginUser(email, password) {
 
@@ -80,7 +87,9 @@ const App = () => {
     dispatch(login(user));
   }
 
-
+if(loading){
+  return <div>Loading...</div>
+}
 
 
   return (

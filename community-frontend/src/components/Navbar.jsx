@@ -14,7 +14,7 @@ const Navbar = () => {
   const navigate=useNavigate()
 
   const dashboardpath= 
-  user?.role=="host"?"/host-Dashboard":"/dashboard"
+  user?.role==="host"?"/host-Dashboard":"/dashboard"
 
   async function logOutHandler() {
             try {
@@ -73,6 +73,7 @@ const Navbar = () => {
     </div>
   )
 }
+
 
 export default Navbar
 
