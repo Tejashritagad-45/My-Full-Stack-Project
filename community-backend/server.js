@@ -21,12 +21,16 @@ connectDb(MONGO_URI)
 
 const app=express();
 
-app.use(cors({
-  origin:["http://localhost:5173",
-        "https://my-full-stack-project.vercel.app"
-  ],
-  credentials:true
-}));
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+
+app.set("trust proxy", 1);
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 
 app.use(cookieParser());
 app.use(express.json())
