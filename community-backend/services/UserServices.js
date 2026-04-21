@@ -279,7 +279,8 @@ const forgetPassword=async({email})=>{
 
      await user.save();
 
-     const resetURL=`${process.env.CLIENT_URL}/reset-password/${resetToken}`
+     const resetURL=`${process.env.FRONTEND_URL}/reset-password/${resetToken}`
+     console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
 
      return {resetURL}
         
