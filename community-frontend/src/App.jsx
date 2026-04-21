@@ -22,6 +22,7 @@ import { setExistingEventDetails } from '../store/slices/eventSlice'
 import HostDashboard from './pages/HostDashboard'
 import { Toaster } from "react-hot-toast"
 import ProtectedRoute from './pages/ProtectedRoute'
+import ForgotPassword from './pages/ForgotPassword'
 
 
 
@@ -129,6 +130,8 @@ if(loading){
             <ProfilePage />
           </ProtectedRoute>
         } />
+
+        <Route path='forgot-Password' element={<ForgotPassword/>}/>
 
       </Routes>
 

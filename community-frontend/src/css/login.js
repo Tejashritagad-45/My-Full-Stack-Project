@@ -36,5 +36,6 @@ export const styles = {
 
   successMsg: "text-center mt-2 text-xs font-semibold text-emerald-600 bg-emerald-50 py-1.5 rounded-lg animate-fade-in",
 
-  errorMsg: "text-pink-500 text-[10px] font-bold mt-1 ml-2 italic"
+  errorMsg: "text-pink-500 text-[10px] font-bold mt-1 ml-2 italic",
+  password:"text-end text-xs"
 };

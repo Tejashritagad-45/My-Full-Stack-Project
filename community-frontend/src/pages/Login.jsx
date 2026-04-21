@@ -176,6 +176,8 @@ const Login = () => {
             {Errors.password && <p className='error'> {Errors.password}</p>}
           </div>
 
+          <h2 className={styles.password} onClick={()=>navigate("/forgot-Password")}>forget password</h2>
+
           <button className={styles.btn}>login</button>
           <h2 className='message'>{msg}</h2>
 
