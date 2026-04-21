@@ -18,6 +18,8 @@ router.get("/dashboard",verifyToken,isMemberMiddleware ,userController.dashboard
 router.get("/host-dashboard",verifyToken,isHostMiddleware ,userController.hostDashboard);
 router.patch("/toggleRSVP",verifyToken,userController.toggleRSVP);
 router.get("/logout",verifyToken,userController.logout)
+router.post("/forgot-password",userController.forgetPassword);
+router.post("/reset-password/:token",userController.resetPassword)
 router.patch("/userProfilePic",uploadProfilePic.single("profilePic"),userController.userProfilePic)
 // here if we want  use a multiple then we use a array and pass one arg limit kitane dene hai like a 10
 // router.patch("/userProfilePic", userProfilePic.single("profilePic",10),userController.userProfilePic)

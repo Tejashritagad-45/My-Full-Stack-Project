@@ -22,6 +22,8 @@ const userSchema= new mongoose.Schema({
         select:false,
         minLength:6,
     },
+     resetPasswordToken:String,
+    resetPasswordExpire:Date,
 
     profilePicUrl:{
         type:String

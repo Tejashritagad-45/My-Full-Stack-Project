@@ -5,6 +5,7 @@ import Community from "../models/Community.js";
 import mongoose from "mongoose";
 import Event from "../models/Event.js";
 import uploadProfilePic from "../config/multer.js";
+import crypto from "crypto";
 
 
 const registerUser = async ({ name, email, password }) => {
@@ -260,6 +261,58 @@ const toggleRSVP = async ({ user, eventId }) => {
 
 }
 
+const forgetPassword=async({email})=>{
+    const user= await User.findOne({email})
+    console.log(user);
+    
+    if(!user)
+        throw new Error("user is not found");
+    const resetToken=crypto.randomBytes(32).toString("hex")
+
+    const hashedToken=crypto
+     .createHash("sha256")
+     .update(resetToken)
+     .digest("hex")
+ 
+     user.resetPasswordToken=hashedToken;
+     user.resetPasswordExpire=Date.now()+10*60*1000
+
+     await user.save();
+
+     const resetURL=`${process.env.CLIENT_URL}/reset-password/${resetToken}`
+
+     return {resetURL}
+        
+}
+
+const resetPassword=async({token,password})=>{
+    const hashedToken=crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex")
+
+
+    const user=await User.findOne({
+        resetPasswordToken:hashedToken,
+        resetPasswordExpire:{$gt: Date.now()},
+    }).select("+hashedPassword");
+
+    if(!user){
+        throw new Error("Invalid Expired token");
+        
+    }
+
+    const newhashedPassword=await bcrypt.hash(password,10)
+    user.hashedPassword=newhashedPassword;
+
+    user.resetPasswordToken=undefined;
+    user.resetPasswordExpire=undefined;
+
+    await user.save();
+
+    return {succes:true};
+};
+
 const uploadProfilePics = async ({ userProfilePath, userId }) => {
     const user = await User.findByIdAndUpdate(
         userId,
@@ -276,5 +329,7 @@ export default {
     dashboard,
     hostDashboard,
     toggleRSVP,
-    uploadProfilePics
+    uploadProfilePics,
+    forgetPassword,
+    resetPassword,
 };

@@ -310,6 +310,70 @@ const logout = (req, res) => {
     }
 }
 
+const forgetPassword=async(req,res)=>{
+    try{
+        const {email}=req.body
+        console.log({email});
+        
+     const result=   await UserServices.forgetPassword({email})
+        res.json({
+            data:{
+                message:"reset link generated",
+                   resetURL:result?.resetURL
+            },
+            error:null
+        })
+    }catch(error){
+        console.log(error);
+        res.json({
+
+            error:{
+                message:"user is not found",
+                info:error.message
+            },
+            data:null
+        })
+        
+    }
+}
+
+
+const resetPassword=async(req,res)=>{
+    try{
+        const {token}=req.params
+        const {password,confirmedPassword}=req.body
+        if(!password || !confirmedPassword)
+            throw new Error("both password are required");
+            
+         if(password !==confirmedPassword){
+            throw new Error("password is not match");
+            
+         }
+       await UserServices.resetPassword({token,password})
+     
+       
+       res.json({
+        data:{
+            message:"succesfully reset the Password",
+         
+            
+        },
+        
+        
+        error:null
+       })
+    }catch(error){
+        res.json({
+            error:{
+                message:"failed to reset password",
+                info:error.message
+                
+            },
+            data:null
+        })
+
+    }
+}
 
 
 
@@ -353,5 +417,7 @@ export default {
     hostDashboard,
     toggleRSVP,
     logout,
-    userProfilePic
+    userProfilePic,
+    forgetPassword,
+    resetPassword,
 }
